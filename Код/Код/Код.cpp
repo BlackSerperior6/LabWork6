@@ -4,32 +4,7 @@
 
 using namespace std;
 
-char AllowedChars[] = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '_' , '-'};
-
-map<int, string> GetMap(string String) //Перегрузка для нахождения кол-ва слов, начинающихся на а
-{
-	map<int, string> TestMap;
-	int size = String.size(); //Получаем размер строки
-	string buffer = ""; //Инициализируем буффер
-
-	for (int i = 0; i < size + 1; i++) //Проходим по всей строке
-	{
-		if (String[i] == ' ' || i == size) //Если текущий элемент - пробел или же достигнут последний элемент
-		{
-			TestMap[i - buffer.size()] = buffer; 
-			cout << i - buffer.size() << " " << TestMap[i - buffer.size()] << endl;
-			buffer = ""; 
-		}
-		else
-		{
-			buffer += String[i];
-			cout << "Значение буффера " << buffer << endl;
-			cout << "Размер буффера: " << buffer.size() << endl;
-		}	
-	}
-
-	return TestMap;
-}
+char AllowedChars[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_' , '-'};
 
 int Check(char element) 
 {
@@ -37,7 +12,7 @@ int Check(char element)
 	bool flag = false;
 	int counter = 0;
 
-	while (counter < 11 && !flag) 
+	while (counter < 12 && !flag) 
 	{
 		flag = AllowedChars[counter] == element;
 		counter++;
@@ -50,14 +25,33 @@ int main()
 {
 	setlocale(LC_ALL, "RUS");
 	string input;
+	int counter = 0;
+	bool flag = false;
+	int startIndex = 0;
+	int endIndex = 0;
+
 	getline(cin, input);
+	input += " ";
 
-	map<int, string> map = GetMap(input);
+	if (input.size() == 0)
+		return 0;
 
-	for (auto& item : map) 
+	while (counter < input.size())
 	{
-		if (Check(item.second[0]) && item.second.size() >= 2 && input.size() > 0)
-			input.erase(item.first, item.second.size());
+		if (!flag && input[counter + 1] != ' ' && (counter == 0 || input[counter - 1] == ' ') && Check(input[counter]))
+		{
+			flag = true;
+			startIndex = counter;
+		}
+
+		if (flag && input[counter] == ' ')
+		{
+			flag = false;
+			input.erase(startIndex, counter + 1);
+			counter = -1;
+		}
+
+		counter++;
 	}
 
 	cout << input << endl;
