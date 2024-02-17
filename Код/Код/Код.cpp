@@ -28,13 +28,19 @@ int main()
 	int counter = 0;
 	bool flag = false;
 	int startIndex = 0;
-	int endIndex = 0;
+
+	cout << "Введите строку" << endl;
 
 	getline(cin, input);
-	input += " ";
 
 	if (input.size() == 0)
+	{
+		cout << "Строка не должна быть пустой" << endl;
 		return 0;
+	}
+
+
+	input += ' ';
 
 	while (counter < input.size())
 	{
@@ -47,12 +53,12 @@ int main()
 		if (flag && input[counter] == ' ')
 		{
 			flag = false;
-			input.erase(startIndex, counter + 1);
+			input.erase(startIndex, (counter - startIndex) + 1);
 			counter = -1;
 		}
 
 		counter++;
 	}
 
-	cout << input << endl;
+	cout << endl << "Ваша строка:" << endl << input << endl;
 }
