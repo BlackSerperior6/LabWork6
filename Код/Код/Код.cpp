@@ -1,63 +1,60 @@
 ﻿#include <iostream>
 #include <string>
-#include <map>
 
 using namespace std;
 
-char AllowedChars[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_' , '-'};
+char ForbiddenChars[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '_' , '-'}; //Список знаков, с которых слово не может начинаться
 
-int Check(char element) 
+int Check(char element)  //Проверка символа на то, принадлежит ли он массиву выше
 {
-	setlocale(LC_ALL, "rus");
-	bool flag = false;
-	int counter = 0;
+	bool flag = false; //Переменная флага
+	int counter = 0; //Переменная счетчика
 
-	while (counter < 12 && !flag) 
+	while (counter < 12 && !flag) //Пока не достигли конца массива и приэтом флаг не стал истиным
 	{
-		flag = AllowedChars[counter] == element;
-		counter++;
+		flag = ForbiddenChars[counter] == element; //Сравнить элемент и элемент массива по счетчику
+		counter++; //Прибавить к счетчику единицу
 	}
 
-	return flag;
+	return flag; //Вернуть значение флага
 }
 
 int main()
 {
-	setlocale(LC_ALL, "RUS");
-	string input;
-	int counter = 0;
-	bool flag = false;
-	int startIndex = 0;
+	setlocale(LC_ALL, "RUS"); //Подключаем русский язык
+	string input; //Выделяем память под строковую переменную
+	int counter = 0; //Переменная счетчика
+	bool flag = false; //Переменная флага
+	int startIndex = 0; //Переменная индекса
 
 	cout << "Введите строку" << endl;
 
-	getline(cin, input);
+	getline(cin, input); //Пользователь вводит строку
 
-	if (input.size() == 0)
+	if (input.size() == 0) //Проверки строки на то, что она не пустая
 	{
 		cout << "Строка не должна быть пустой" << endl;
 		return 0;
 	}
 
+	input += ' '; //Добавляем к строке пробел для удобства
 
-	input += ' ';
-
-	while (counter < input.size())
+	while (counter < input.size()) //Пока не достигли конца строки
 	{
-		if (!flag && input[counter + 1] != ' ' && (counter == 0 || input[counter - 1] == ' ') && Check(input[counter]))
+		if (!flag && input[counter + 1] != ' ' && (counter == 0 || input[counter - 1] == ' ') && Check(input[counter])) //Если флаг еще не включен и следующий символ не пробел и приэтом либо работаем с первым элементом, либо предыдущее значение = пробеелы и приэтом символ входит в перечень запрещенных
 		{
-			flag = true;
-			startIndex = counter;
+			flag = true; //Влюкчаем флаг
+			startIndex = counter; //Записываем текущий индекс
 		}
 
-		if (flag && input[counter] == ' ')
+		if (flag && input[counter] == ' ') //Если флаг включен и наткнулись на пробел
 		{
-			flag = false;
-			input.erase(startIndex, (counter - startIndex) + 1);
-			counter = -1;
+			flag = false; //Выключить флаг
+			input.erase(startIndex, (counter - startIndex) + 1); //Стереть строку, начиная с ранее записаного стартового индекса и заканчивая текущим элементом
+			counter = -1; //Сбросить счетчик
 		}
 
-		counter++;
+		counter++; //Прибавить единицу к счетчику
 	}
 
 	cout << endl << "Ваша строка:" << endl << input << endl;
